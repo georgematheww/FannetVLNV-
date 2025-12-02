@@ -2,31 +2,32 @@
 # Configuration for collecting Windows Event Logs and IIS Logs.
 # These inputs are managed by the enabled modules.
 
-- type: filestream
-  id: iis-access-logs
-  enabled: true
-  paths:
-    # Default IIS access log location
-    - C:\inetpub\logs\LogFiles\**\u_ex*.log
-  tags: [iis, access]
-  fields_under_root: true
-  processors:
-    - add_host_metadata: ~
-    - add_cloud_metadata: ~
+filebeat.inputs:
+  - type: filestream
+    id: iis-access-logs
+    enabled: true
+    paths:
+      # Default IIS access log location
+      - C:\inetpub\logs\LogFiles\**\u_ex*.log
+    tags: [iis, access]
+    fields_under_root: true
+    processors:
+      - add_host_metadata: {}
+      - add_cloud_metadata: {}
   
-- type: winlog
-  id: windows-event-logs
-  enabled: true
-  # Collects standard critical Windows Event Log channels
-  channels:
-    - name: Application
-    - name: Security
-    - name: System
-  tags: [windows, eventlog]
-  fields_under_root: true
-  processors:
-    - add_host_metadata: ~
-    - add_cloud_metadata: ~
+  - type: winlog
+    id: windows-event-logs
+    enabled: true
+    # Collects standard critical Windows Event Log channels
+    channels:
+      - name: Application
+      - name: Security
+      - name: System
+    tags: [windows, eventlog]
+    fields_under_root: true
+    processors:
+      - add_host_metadata: {}
+      - add_cloud_metadata: {}
 
 # =============================== Filebeat outputs ===============================
 # Configure output to send data directly to your Elasticsearch cluster.
@@ -45,7 +46,6 @@ output.elasticsearch:
   
   compression_level: 5
 
-
 # =============================== Kibana Setup ===============================
 # Configuration to load dashboards, visualizations, and index patterns into Kibana.
 setup.kibana:
@@ -55,12 +55,12 @@ setup.kibana:
   # Authentication using the 'elastic' user and provided password
   username: "elastic"
   password: "x3ajIc3ToM*+aRYt=Zgp"
-  
+
 # =============================== Dashboards ===============================
 # Ensure pre-built dashboards for IIS and Windows are loaded.
 setup.dashboards:
   enabled: true
-  
+
 # =============================== Index Setup ===============================
 # Ensure index lifecycle management (ILM) and templates are set up correctly.
 setup.ilm.enabled: true
