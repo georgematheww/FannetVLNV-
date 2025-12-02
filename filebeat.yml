@@ -1,6 +1,5 @@
 # ================================== Filebeat inputs ===================================
 # Configuration for collecting Windows Event Logs and IIS Logs.
-# These inputs are managed by the enabled modules.
 
 filebeat.inputs:
   - type: filestream
@@ -18,7 +17,6 @@ filebeat.inputs:
   - type: winlog
     id: windows-event-logs
     enabled: true
-    # Collects standard critical Windows Event Log channels
     channels:
       - name: Application
       - name: Security
@@ -32,34 +30,15 @@ filebeat.inputs:
 # =============================== Filebeat outputs ===============================
 # Configure output to send data directly to your Elasticsearch cluster.
 output.elasticsearch:
-  # Elasticsearch Host
   hosts: ["https://10.255.70.10:9200"]
-  
-  # Authentication using the 'elastic' user and provided password
   username: "elastic"
   password: "x3ajIc3ToM*+aRYt=Zgp"
   
-  # --- SSL/TLS Configuration to Ignore Certificate ---
+  # SSL/TLS Configuration
   ssl.enabled: true
-  # WARNING: This bypasses certificate verification.
-  ssl.verification_mode: none 
+  ssl.verification_mode: none
   
   compression_level: 5
-
-# =============================== Kibana Setup ===============================
-# Configuration to load dashboards, visualizations, and index patterns into Kibana.
-setup.kibana:
-  # Kibana Host
-  host: "10.255.70.10:5601"
-  
-  # Authentication using the 'elastic' user and provided password
-  username: "elastic"
-  password: "x3ajIc3ToM*+aRYt=Zgp"
-
-# =============================== Dashboards ===============================
-# Ensure pre-built dashboards for IIS and Windows are loaded.
-setup.dashboards:
-  enabled: true
 
 # =============================== Index Setup ===============================
 # Ensure index lifecycle management (ILM) and templates are set up correctly.
